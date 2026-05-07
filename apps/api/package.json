@@ -1,0 +1,35 @@
+{
+  "name": "@pvm/api",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "dev": "next dev --port 3001",
+    "build": "next build",
+    "start": "next start --port 3001",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "clean": "rm -rf .next dist"
+  },
+  "dependencies": {
+    "graphql-yoga": "^5.10.4",
+    "@trpc/server": "^11.0.0",
+    "graphql": "^16.10.0",
+    "next": "^14.2.29",
+    "pg": "^8.13.3",
+    "pino": "^9.6.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@pvm/config": "*",
+    "@pvm/shared": "*",
+    "@types/node": "^22.13.13",
+    "@types/pg": "^8.11.11",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^14.2.29",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.8"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "@pvm/config",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "exports": {
+    "./eslint": "./eslint/index.js",
+    "./typescript/base": "./typescript/base.json",
+    "./typescript/nextjs": "./typescript/nextjs.json",
+    "./tailwind": "./tailwind/preset.js"
+  },
+  "files": [
+    "eslint",
+    "typescript",
+    "tailwind"
+  ]
+}

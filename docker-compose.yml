@@ -1,0 +1,88 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  migrate:
+    image: ghcr.io/amacneil/dbmate:2
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      DATABASE_URL: ${DATABASE_URL_DOCKER:-postgresql://${POSTGRES_USER:-pvm_user}:${POSTGRES_PASSWORD:-pvm_pass}@postgres:5432/${POSTGRES_DB:-pvm_db}?sslmode=disable}
+    volumes:
+      - ./migrations:/db/migrations
+    depends_on:
+      postgres:
+        condition: service_healthy
+    profiles:
+      - migrate
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    restart: unless-stopped
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      DATABASE_URL: ${DATABASE_URL_DOCKER:-postgresql://${POSTGRES_USER:-pvm_user}:${POSTGRES_PASSWORD:-pvm_pass}@postgres:5432/${POSTGRES_DB:-pvm_db}?sslmode=disable}
+      NODE_ENV: production
+      PORT: 3001
+      API_PORT: 3001
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL_DOCKER:-http://localhost:5173/api}
+        NEXT_PUBLIC_TRPC_URL: ${NEXT_PUBLIC_TRPC_URL_DOCKER:-http://localhost:5173/api/trpc}
+        NEXT_PUBLIC_GRAPHQL_URL: ${NEXT_PUBLIC_GRAPHQL_URL_DOCKER:-http://localhost:5173/api/graphql}
+    restart: unless-stopped
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL_DOCKER:-http://localhost:5173/api}
+      NEXT_PUBLIC_TRPC_URL: ${NEXT_PUBLIC_TRPC_URL_DOCKER:-http://localhost:5173/api/trpc}
+      NEXT_PUBLIC_GRAPHQL_URL: ${NEXT_PUBLIC_GRAPHQL_URL_DOCKER:-http://localhost:5173/api/graphql}
+    depends_on:
+      - api
+
+  nginx:
+    build:
+      context: ./infra/nginx
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    depends_on:
+      - web
+      - api
+
+volumes:
+  pgdata:
+

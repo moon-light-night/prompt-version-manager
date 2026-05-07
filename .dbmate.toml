@@ -1,0 +1,7 @@
+# dbmate configuration
+# Used when running dbmate directly (not via docker-compose migrate service)
+# Override DATABASE_URL via environment variable or .env file
+
+migrations-dir = ./migrations
+schema-file    = ./migrations/schema.sql
+no-dump-schema = false

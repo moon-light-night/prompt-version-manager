@@ -1,0 +1,12 @@
+export const PROMPT_RUN_DEFAULT_LIMIT_BY_PROMPT = 50;
+export const PROMPT_RUN_DEFAULT_LIMIT_BY_VERSION = 50;
+export const PROMPT_RUN_DEFAULT_LIMIT_BY_TEST_CASE = 100;
+
+export const PROMPT_RUN_PAGINATION_MIN_LIMIT = 1;
+export const PROMPT_RUN_PAGINATION_MAX_LIMIT = 100;
+export const PROMPT_RUN_PAGINATION_DEFAULT_OFFSET = 0;
+
+export const PROMPT_RUNS_TABLE = "prompt_runs";
+export const PROMPT_TEST_CASES_TABLE = "prompt_test_cases";
+
+export const PROMPT_RUN_ORDER_BY_RAN_AT_DESC = "ORDER BY ran_at DESC";
