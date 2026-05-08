@@ -12,6 +12,18 @@
 | **Backend** | Next.js 14, TypeScript, tRPC v11 (end-to-end type-safe RPC), GraphQL Yoga, PostgreSQL 16, dbmate |
 | **Infra** | Docker Compose, Nginx, Turborepo |
 
+---
+
+## Архитектурная документация
+
+- Общий индекс документации: [docs/README.md](docs/README.md)
+- C4 Context: [docs/c4-context.md](docs/c4-context.md)
+- C4 Container: [docs/c4-container.md](docs/c4-container.md)
+- ERD баз данных: [docs/erd.md](docs/erd.md)
+- Sequence diagrams: [docs/sequence-diagrams.md](docs/sequence-diagrams.md)
+
+---
+
 ## Быстрый старт
 
 ### Требования
